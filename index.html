@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LED-style UI</title>
+    <style>
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 50px;
+            margin-bottom: 10px;
+        }
+
+        .led {
+            width: 10px;
+            height: 10px;
+            margin: 0;
+            padding: 0;
+            border: none;
+            background-color: black;
+        }
+
+        .led.on {
+            background-color: lime;
+        }
+    </style>
+    <script src="./DotMatrix.js"></script>
+</head>
+<body>
+    <div id="ledDisplay"></div>
+
+    <script>
+        function displayCharacter(character) {
+            const container = document.getElementById("ledDisplay");
+            container.innerHTML = "";
+
+            character.forEach(row => {
+                const rowContainer = document.createElement("div");
+                rowContainer.classList.add("container");
+                row.forEach(cell => {
+                    const led = document.createElement("button");
+                    led.classList.add("led");
+                    if (cell === 1) {
+                        led.classList.add("on");
+                    }
+                    rowContainer.appendChild(led);
+                });
+                container.appendChild(rowContainer);
+            });
+        }
+
+        displayCharacter(char_five);
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dot Matrix Display</title>
+    <style>
+        :root {
+            --lit: #1eff53;
+            --dim: #0d0d0d;
+            --dot-size: 1vw;
+            --led-size: 2vw;
+        }
+
+        * {
+            margin: 0;
+            font-size: 16pt;
+        }
+
+        #dot-matrix-container {
+            display: flex;
+            justify-content: right;
+            background-color: #000;
+            margin-top: var(--led-size);
+            border-radius: calc(var(--led-size)/2);
+            padding: var(--led-size);
+            height: calc(var(--dot-size) * 16);
+        }
+
+        .dot-matrix > * {
+            display: flex;
+
+        }
+
+        .dot {
+            display: inline-block;
+            width: var(--dot-size);
+            height: var(--dot-size);
+            background-color: var(--dim);
+            border-radius: 50%;
+            margin: calc(var(--dot-size) / 2);
+        }
+
+        .dot.on {
+            background-color: var(--lit);
+            box-shadow: 
+                0 0 calc(var(--dot-size) / 4) var(--lit), 
+                0 0 calc(var(--dot-size) / 2) var(--lit), 
+                0 0 calc(var(--dot-size)) var(--lit), 
+                0 0 calc(var(--dot-size) * 1.5) var(--lit);
+        }
+
+        .input-box {
+            display: flex;
+            width: 50%;
+            margin: var(--led-size);
+        }
+
+        .input-box > input {
+            display: inline-block;
+            width: 100%;
+        }
+
+        .input-box > button {
+            margin-left: var(--led-size);
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <div class="input-box">
+        <input id="led-in" type="text" />
+        <button id="led-clr">Clear</button>
+    </div>
+    <div id="dot-matrix-container"></div>
+    <script type="module">
+        import DotMatrix from './DotMatrix.js';
+
+        const ledInput = document.getElementById('led-in');
+        const ledClear = document.getElementById('led-clr');
+
+        ledInput.onkeyup = () => {
+            const inputString = ledInput.value;
+            const dotMatrix = new DotMatrix();
+            const container = document.getElementById('dot-matrix-container');
+
+            inputString.split('').forEach(char => {
+                const targetElement = document.createElement('div');
+                targetElement.classList.add('dot-matrix')
+                container.appendChild(targetElement);
+                dotMatrix.displayCharacter(char, targetElement);
+            });
+        }
+
+        ledClear.onclick = () => {
+            ledInput.value = '';
+            ledInput.focus();
+        }
+    </script>
+</body>
+</html>
