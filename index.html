@@ -3,62 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LED-style UI</title>
-    <style>
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            width: 50px;
-            margin-bottom: 10px;
-        }
-
-        .led {
-            width: 10px;
-            height: 10px;
-            margin: 0;
-            padding: 0;
-            border: none;
-            background-color: black;
-        }
-
-        .led.on {
-            background-color: lime;
-        }
-    </style>
-    <script src="./DotMatrix.js"></script>
-</head>
-<body>
-    <div id="ledDisplay"></div>
-
-    <script>
-        function displayCharacter(character) {
-            const container = document.getElementById("ledDisplay");
-            container.innerHTML = "";
-
-            character.forEach(row => {
-                const rowContainer = document.createElement("div");
-                rowContainer.classList.add("container");
-                row.forEach(cell => {
-                    const led = document.createElement("button");
-                    led.classList.add("led");
-                    if (cell === 1) {
-                        led.classList.add("on");
-                    }
-                    rowContainer.appendChild(led);
-                });
-                container.appendChild(rowContainer);
-            });
-        }
-
-        displayCharacter(char_five);
-    </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dot Matrix Display</title>
     <style>
         :root {
